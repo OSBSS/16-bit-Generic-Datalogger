@@ -1,4 +1,4 @@
-// 3/12/2014 - Generic 4-channel Voltage Datalogger 16-bit v0.02
+// 3/30/2014 - Generic 4-channel Voltage Datalogger 16-bit v0.02
 
 // If you're using a 3.3V Pro Mini, the maximum voltage reading with v0.02 of the logger is upto 3.3V only,
 // which is the voltage between VCC and GND of ADS1115.Do NOT supply greater than 3.3V to the channels
@@ -54,7 +54,7 @@ void setup()
   ads.begin();
   //ads.setGain(GAIN_TWO);  // set gain here
   
-  if(!sd.init(SPI_FULL_SPEED, SDcsPin))  // initialize SD card on the SPI bus  - very important
+  if(!sd.begin(SDcsPin, SPI_FULL_SPEED))  // initialize SD card on the SPI bus  - very important
   {
     delay(10);
     SDcardError();
@@ -128,7 +128,7 @@ void loop()
   float V3 = voltage(adc3, 0);
   
   pinMode(SDcsPin, OUTPUT);
-  if(!sd.init(SPI_FULL_SPEED, SDcsPin))    // very important - reinitialize SD card on the SPI bus
+  if(!sd.begin(SDcsPin, SPI_FULL_SPEED))    // very important - reinitialize SD card on the SPI bus
   {
     delay(10);
     SDcardError();
@@ -217,7 +217,7 @@ float voltage(float adc, int gain)
   return V;
 }
 
-// file timestamps
+// file timestamps ****************************************************************
 void PrintFileTimeStamp() // Print timestamps to data file. Format: year, month, day, hour, min, sec
 { 
   file.timestamp(T_WRITE, RTC.year, RTC.month, RTC.day, RTC.hour, RTC.minute, RTC.second);    // edit date modified
